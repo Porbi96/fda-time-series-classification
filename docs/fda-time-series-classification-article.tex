@@ -155,9 +155,10 @@ The template details the sections that can be used in a manuscript. Note that th
 \section{Introduction}
 
 Functional data is the way of data interpretation where each subject is considered as a continuous curve. This field became more popular in recent years in various fields of science, for example biology and economics. Hence, with the rapid popularity grow, new sub-field of statistics appeared, called functional data analysis (FDA). Due to high dimensionality of considered data, many approaches of FDA are based on basis expansions and principle components analysis. Another part of FDA, used for example in case of time series analysis, is data classification. In this case, methods analogical to existing in traditional statistics can be used. 
-Many researchers have already presented several methods of FDA, including funtional logistic regression \cite{ramsay-logreg, ramsay-logreg2}, functional principal component analysis
 
-In this paper we present the general approach of time series data classification using functional logistic regression both in binary and multiclass variants.
+Many researchers have already presented several methods of FDA, including funtional logistic regression \cite{ramsay-logreg, ramsay-logreg2} and functional principal component analysis \cite{besse-pca, pezzulini-pca}. Mousavi and Sørensen made great comparison of several methods of functional logistic regression \cite{logreg-comparison}, and Berrendero et al. described possible issues and problems with implementation \cite{logreg-issues}.
+
+In this paper the general approach of time series data classification using functional logistic regression both in binary and multiclass variants is presented. To handle the dimensionality of data, voice recordings of commutator motors described in \cite{ref-motors}, basis spline functions of parametrized order are used. 
 
 The introduction should briefly place the study in a broad context and highlight why it is important. It should define the purpose of the work and its significance. The current state of the research field should be reviewed carefully and key publications cited. Please highlight controversial and diverging hypotheses when necessary. Finally, briefly mention the main aim of the work and highlight the principal conclusions. As far as possible, please keep the introduction comprehensible to scientists outside your particular field of research. Citing a journal paper \cite{ref-journal}. Now citing a book reference \cite{ref-book1,ref-book2} or other reference types \cite{ref-unpublish,ref-communication,ref-proceeding}. Please use the command \citep{ref-thesis,ref-url} for the following MDPI journals, which use author--date citation: Administrative Sciences, Arts, Econometrics, Economies, Genealogy, Humanities, IJFS, Journal of Intelligence, Journalism and Media, JRFM, Languages, Laws, Religions, Risks, Social Sciences, Literature.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -412,18 +413,27 @@ All appendix sections must be cited in the main text. In the appendices, Figures
 \begin{thebibliography}{999}
 % Reference 1
 \bibitem[Ramsay(1991)]{ramsay-logreg}
-Ramsay, J., Dalzell, C., Some tools for functional data analysis. {\em Journal of the Royal Statistical Society, Series B} {\bf 2008}.
+Ramsay, J., Dalzell, C. Some tools for functional data analysis. {\em Journal of the Royal Statistical Society, Series B} {\bf 2008}.
 % Reference 2
 \bibitem[Ramsay(1997)]{ramsay-logreg2}
 Ramsay, J., Silverman, B. {\em Functional Data Analysis}; Springer: New York, 1997.
 % Reference 3
 \bibitem[Besse(1986)]{besse-pca}
-Besse, P., Ramsay, J., Principal components analysis of sampled functions. {\em Psychometrika}, 1986.
+Besse, P., Ramsay, J. Principal components analysis of sampled functions. {\em Psychometrika}, 1986.
 % Reference 4
-\bibitem[Besse(1986)]{besse-pca}
-Pezzulini, S., Silverman, B., Some properties of smoothed principal components analysis for functional data. {\em Computational Statistics}, 1993.
-
 \bibitem[Pezzulini(1993)]{pezzulini-pca}
+Pezzulini, S., Silverman, B. Some properties of smoothed principal components analysis for functional data. {\em Computational Statistics}, 1993.
+
+\bibitem[Mousavi(2018)]{logreg-comparison}
+Mousavi, S., Sørensen, H. Functional logistic regression: a comparison of three methods. {\em Journal of Statistical Computation and Simulation}, {\bf 2018}, 88:2, 250-268.
+
+\bibitem[Berrendero(2018)]{logreg-issues}
+Berrendero, J., Bueno-Larraz, B., Cuevas. A. On functional logistic regression: some conceptual issues., 2018.
+
+\bibitem[Glowacz(2018)]{ref-motors}
+Głowacz, A. Recognition of Acoustic Signals of Commutator Motors, {/em Appl. Sci.} {\bf 2018}, 8, 2630.
+
+\bibitem[Pezzulini(1993)]{ref-pca}
 Author 1, S., Author 2, B. Title of Unpublished Work. \textit{Abbreviated Journal Name} year, \textit{phrase indicating stage of publication (submitted; accepted; in press)}.
 % Reference 5
 \bibitem[Author5(year)]{ref-communication}
