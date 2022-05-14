@@ -2,7 +2,7 @@
 %  For support, please attach all files needed for compiling as well as the log file, and specify your operating system, LaTeX version, and LaTeX editor.
 
 %=================================================================
-\documentclass[journal,article,submit,pdftex,moreauthors]{Definitions/mdpi} 
+\documentclass[energies,article,submit,pdftex,moreauthors]{Definitions/mdpi} 
 % For posting an early version of this manuscript as a preprint, you may use "preprints" as the journal and change "submit" to "accept". The document class line would be, e.g., \documentclass[preprints,article,accept,moreauthors,pdftex]{mdpi}. This is especially recommended for submission to arXiv, where line numbers should be removed before posting. For preprints.org, the editorial staff will make this change immediately prior to posting.
 
 %--------------------
@@ -69,13 +69,13 @@
 
 %=================================================================
 % Full title of the paper (Capitalized)
-\Title{Time Series Classification Using Functional Logistic Regression In Binary And Multiclass Variants}
+\Title{Functional Logistic Regression for Motor Fault Classification Using Acoustic Data in Frequency Domain}
 
 % MDPI internal command: Title for citation in the left column
-\TitleCitation{Title}
+\TitleCitation{Functional Logistic Regression for Motor Fault Classification Using Acoustic Data in Frequency Domain}
 
 % Author Orchid ID: enter ID or remove command
-\newcommand{\orcidauthorA}{0000-0000-0000-000X} % Add \orcidA{} behind the author's name
+\newcommand{\orcidauthorA}{0000-0003-3313-581X} % Add \orcidA{} behind the author's name
 %\newcommand{\orcidauthorB}{0000-0000-0000-000X} % Add \orcidB{} behind the author's name
 
 % Authors, for the paper (add full first names)
@@ -84,7 +84,7 @@
 %\longauthorlist{yes}
 
 % MDPI internal command: Authors, for metadata in PDF
-\AuthorNames{Jakub Poręb, Jerzy Baranowski}
+\AuthorNames{Jakub Poręba, Jerzy Baranowski}
 
 % MDPI internal command: Authors, for citation in the left column
 \AuthorCitation{Poręba, J.; Baranowski, J.}
@@ -92,15 +92,14 @@
 
 % Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
 \address{%
-$^{1}$ \quad Affiliation 1; e-mail@e-mail.com\\
-$^{2}$ \quad Affiliation 2; e-mail@e-mail.com}
+AGH University of Science \& Technology; e-mail@e-mail.com, jb@agh.edu.pl}
+
 
 % Contact information of the corresponding author
-\corres{Correspondence: e-mail@e-mail.com; Tel.: (optional; include country code; if there are multiple corresponding authors, add author initials) +xx-xxxx-xxx-xxxx (F.L.)}
+\corres{Correspondence: jb@agh.edu.pl;}
 
 % Current address and/or shared authorship
-\firstnote{Current address: Affiliation 3.} 
-\secondnote{These authors contributed equally to this work.}
+
 % The commands \thirdnote{} till \eighthnote{} are available for further notes
 
 %\simplesumm{} % Simple summary
@@ -108,7 +107,7 @@ $^{2}$ \quad Affiliation 2; e-mail@e-mail.com}
 %\conference{} % An extended version of a conference paper
 
 % Abstract (Do not insert blank lines, i.e. \\) 
-\abstract{A single paragraph of about 200 words maximum. For research articles, abstracts should give a pertinent overview of the work. We strongly encourage authors to use the following style of structured abstracts, but without headings: (1) Background: place the question addressed in a broad context and highlight the purpose of the study; (2) Methods: describe briefly the main methods or treatments applied; (3) Results: summarize the article's main findings; (4) Conclusions: indicate the main conclusions or interpretations. The abstract should be an objective representation of the article, it must not contain results which are not presented and substantiated in the main text and should not exaggerate the main conclusions.}
+\abstract{}
 
 % Keywords
 \keyword{keyword 1; keyword 2; keyword 3 (List three to ten pertinent keywords specific to the article; yet reasonably common within the subject discipline.)} 
@@ -144,10 +143,9 @@ $^{2}$ \quad Affiliation 2; e-mail@e-mail.com}
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setcounter{section}{-1} %% Remove this when starting to work on the template.
-\section{How to Use this Template}
+% \section{How to Use this Template}
 
-The template details the sections that can be used in a manuscript. Note that the order and names of article sections may differ from the requirements of the journal (e.g., the positioning of the Materials and Methods section). Please check the instructions on the authors' page of the journal to verify the correct order and names. For any questions, please contact the editorial office of the journal or support@mdpi.com. For LaTeX-related questions please contact latex@mdpi.com.%\endnote{This is an endnote.} % To use endnotes, please un-comment \printendnotes below (before References). Only journal Laws uses \footnote.
+% The template details the sections that can be used in a manuscript. Note that the order and names of article sections may differ from the requirements of the journal (e.g., the positioning of the Materials and Methods section). Please check the instructions on the authors' page of the journal to verify the correct order and names. For any questions, please contact the editorial office of the journal or support@mdpi.com. For LaTeX-related questions please contact latex@mdpi.com.%\endnote{This is an endnote.} % To use endnotes, please un-comment \printendnotes below (before References). Only journal Laws uses \footnote.
 
 % The order of the section titles is: Introduction, Materials and Methods, Results, Discussion, Conclusions for these journals: aerospace,algorithms,antibodies,antioxidants,atmosphere,axioms,biomedicines,carbon,crystals,designs,diagnostics,environments,fermentation,fluids,forests,fractalfract,informatics,information,inventions,jfmk,jrfm,lubricants,neonatalscreening,neuroglia,particles,pharmaceutics,polymers,processes,technologies,viruses,vision
 
@@ -158,20 +156,125 @@ Functional data is the way of data interpretation where each subject is consider
 
 Many researchers have already presented several methods of FDA, including funtional logistic regression \cite{ramsay-logreg, ramsay-logreg2} and functional principal component analysis \cite{besse-pca, pezzulini-pca}. Mousavi and Sørensen made great comparison of several methods of functional logistic regression \cite{logreg-comparison}, and Berrendero et al. described possible issues and problems with implementation \cite{logreg-issues}.
 
-In this paper the general approach of time series data classification using functional logistic regression both in binary and multiclass variants is presented. To handle the dimensionality of data, voice recordings of commutator motors described in \cite{ref-motors}, basis spline functions of parametrized order are used. 
+In this paper the general approach and proposed implementation of time series data classification using functional logistic regression both in binary and multiclass variants is presented. To handle the dimensionality of data, voice recordings of commutator motors described in \cite{ref-motors}, B-spline functions of parametrized order are used.
 
-The introduction should briefly place the study in a broad context and highlight why it is important. It should define the purpose of the work and its significance. The current state of the research field should be reviewed carefully and key publications cited. Please highlight controversial and diverging hypotheses when necessary. Finally, briefly mention the main aim of the work and highlight the principal conclusions. As far as possible, please keep the introduction comprehensible to scientists outside your particular field of research. Citing a journal paper \cite{ref-journal}. Now citing a book reference \cite{ref-book1,ref-book2} or other reference types \cite{ref-unpublish,ref-communication,ref-proceeding}. Please use the command \citep{ref-thesis,ref-url} for the following MDPI journals, which use author--date citation: Administrative Sciences, Arts, Econometrics, Economies, Genealogy, Humanities, IJFS, Journal of Intelligence, Journalism and Media, JRFM, Languages, Laws, Religions, Risks, Social Sciences, Literature.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Logistic Regression}
+\subsection{Binary variant}
+Logistic regression is a widely used classification concept. It is mainly applied, and was originally described, for binary problems, however its multiclass version (Softmax) is also well known. As a statistical method, logistic regression allows to measure how several independent variables $ x_1, x_2, ...,  x_k $ affect binary dependent variable $Y$, for example what is the influence of time spent on watching TV series and learning (two independent variables) on the exam results (if passed or not). 
+
+In typical mathematical problems both dependent and independent variables are continuous. If so, the relation of linear regression can be established:
+\begin{linenomath}
+\begin{equation}
+E(Y|X) = \beta_0 + \beta_1 X,
+\end{equation}
+\end{linenomath}
+where $ E(Y|X) $ is a random variable. It can be assumed, that $ Y $ can be only 0 or 1, so then $ E(Y|X) $ is called probability. Hence:
+\begin{linenomath}
+\begin{equation}
+0 < \beta_0 + \beta_1 X < 1
+\end{equation}
+\end{linenomath}
+or, if $ ln(E(Y|X)) $ is considered:
+\begin{linenomath}
+\begin{equation}
+-\infty < \beta_0 + \beta_1 X < 0
+\end{equation}
+\end{linenomath}
+To extend the domain, the idea of odds ratio can be used. It is a relation between probability that a particular event happens in one of groups and probability that it happens in another:
+\begin{linenomath}
+\begin{equation}
+\Omega = \frac{\Pi}{1-\Pi},
+\end{equation}
+\end{linenomath}
+where $ \Pi $ is probability of success, in this case $ \Pi = ln(E(Y|X)) $, and $ \Omega $ is in $ (0, \infty)$. If the above is considered, the final version of logistic regression for binary problems can be formed:
+\begin{linenomath}
+\begin{equation}
+log(\Omega) = log(\frac{E(Y|X)}{1 - E(Y|X)}) = \beta_0 + \beta_1 X
+\end{equation}
+\end{linenomath}
+which domain is $ {\Bbb R} $.
+
+\vspace{5mm}
+Practical uses of logistic regression are based on sigmoid function:
+\begin{linenomath}
+\begin{equation}
+f(t) = \frac{e^t}{1+e^t} = \frac{1}{1+e^-t},
+\end{equation}
+\end{linenomath}
+which can return values between 0 and 1. Hence, the result of function can be considered as probability of predicted value accordance against the real value for a set of input variables. The $ t $ variable consists of linear combination of independent variables described above:
+\begin{linenomath}
+\begin{equation}
+t = \alpha + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_k x_k,
+\end{equation}
+\end{linenomath}
+where $ \alpha $ is a constant bias and $ \beta_i $ is a coefficient describing the influence of $ x_i $ on the result.
+
+\vspace{5mm}
+\subsection{Multiclass variant}
+
+Many mathematical problems demand a classification solutions which are suitable for more than two classes, for example blood groups. For this case, the binary variant of logistic regression was expanded and generalized to a softmax function:
+\begin{linenomath}
+\begin{equation}
+\sigma(\vec{z})_i = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}},
+\end{equation}
+\end{linenomath}
+where $\vec{z} = [z_1, z_2, ..., z_K] \in {\Bbb R}^K$ is a vector of input data and $ K > 1 $ is a number of classes.
+
+In general, the role of softmax function is to normalize vector $\vec{z}$ so the sum of all vector's elements is equal to one. Actually, not only Euler constant can be used, but if so, the sigmoid function can be considered as a special case of generalized logistic regression function for two classes $[t, 0]$:
+\begin{linenomath}
+\begin{equation}
+\sigma(\vec{z})_1 = \frac{e^{z_1}}{e^{z_1}+e^{z_2}} = \frac{e^{t}}{e^{t}+e^{0}} = \frac{e^{t}}{e^{t}+1}
+\end{equation}
+\end{linenomath}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Functional Logistic Regression}
+
+Functional data analysis is based on a conception of considering data as a continuous and smooth function. In fact, many physical processes satisfy this condition. Thus, for example, instead of analysing each discrete sample of time series individually, an interpolated continuous curve can be made and the process can be considered as whole, integral observation.
+
+Many concepts described in functional data analysis are analogical to ones from classical data analysis and statistics. For example, functional version of mean is defined as function based on $ n $ curves building the functional data, calculated for each moment $ t $:
+\begin{linenomath}
+\begin{equation}
+\bar{x}(t) = n^{-1} \sum_{i=1}^{n} x_i (t)
+\end{equation}
+\end{linenomath}
+
+As the real processes are smooth and continuous, the derivatives of functions can be considered. For example, for the data on the graph below, derivative would allow to calculate the speed of growth.
+\begin{figure}[H]
+\includegraphics[width=10.5 cm]{images/berkeley}
+\caption{Sample curves of functional data - height of girls during their growing, based on \href{https://www.jstor.org/stable/1125347}{Berkeley growth study}.}
+\end{figure}
+\unskip
+
+\vspace{5mm}
+Functional version of logistic regression takes many assumptions and similarities from classical approach as other FDA concepts. The sigmoid function (6) stays the same, but with continuous independent variable $ x(t) $ and coefficient function $ \beta(t)$. Thus, the following form of conditional success probability can be expressed as
+\begin{linenomath}
+\begin{equation}
+\pi(x) = \frac{e^{\alpha + \int_T \beta(t)x(t)dt}}{1 + e^{\alpha + \int_T \beta(t)x(t)dt}},
+\end{equation}
+\end{linenomath}
+where $\alpha$ is a bias or intercept parameter and $\beta(t)$, instead of a vector, is a coefficient function square-integrable on $T$. Thus, defined predictor $\pi(x)$ takes independent variables $X : T$ and returns the calculated probability. The same assumptions can be used while describing the multiclass variant as well. 
+
+The main goals of functional logistic regression, especially in use with time series, are classification purposes, prediction of new responses and estimation of $\beta$ function. Of course practical observations must be discrete due to physical limitations, but the subjects $x_1, x_2, ..., x_k$ are considered as functions. To handle the high dimension of collected data and preserve its functional nature, it is common to use a basis expansions, such as a B-spline basis, a Fourier basis or a wavelet basis \cite{logreg-comparison}. 
+
+If bases for expansion are selected as $\theta$ for sampling trajectory and $\omega$ for coefficient function, these functions can be described as
+\begin{linenomath}
+\begin{equation}
+x_i(t) = \sum_{k=1}^{K_x} c_{ik} \theta_k (t) = {\bf c}_i^T \theta (t),
+\hspace{5mm} \beta(t) = \sum_{l=1}^{K_{\beta}} b_l \omega_l (t) = \omega^T (t) {\bf b},
+\end{equation}
+\end{linenomath}
+where $\theta_k (t)$ and $\omega_l (t)$ represent the $k$th and $l$th basis functions evaluated at time $t$.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Materials and Methods}
 
-Materials and Methods should be described with sufficient details to allow others to replicate and build on published results. Please note that publication of your manuscript implicates that you must make all materials, data, computer code, and protocols associated with the publication available to readers. Please disclose at the submission stage any restrictions on the availability of materials or information. New methods and protocols should be described in detail while well-established methods can be briefly described and appropriately cited.
+The practical implementation of functional logistic regression in binary variant is based on and developed from Python library for functional data analysis \href{https://fda.readthedocs.io/en/latest/index.html}{scikit-fda}. The multiclass variant is made from scratch, based on the same library as well as solutions for classical approaches stored in \href{https://scikit-learn.org/}{scikit-learn} library. The final proposed implementation is stored as a public, open-source \href{https://github.com/Porbi96/fda-time-series-classification}{GitHub repository}. The repository contains also a demonstration with use of mock data and practical use based on data possessed.
 
-Research manuscripts reporting large datasets that are deposited in a publicly avail-able database should specify where the data have been deposited and provide the relevant accession numbers. If the accession numbers have not yet been obtained at the time of submission, please state that they will be provided during review. They must be provided prior to publication.
-
-Interventionary studies involving animals or humans, and other studies require ethical approval must list the authority that provided approval and the corresponding ethical approval code.
-\begin{quote}
-This is an example of a quote.
-\end{quote}
+The database used for practical tests and visualizations contains voice recordings of commutator motors both damaged and undamaged. More information about the data can be found in \cite{ref-motors}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
@@ -201,7 +304,7 @@ The text continues here.
 All figures and tables should be cited in the main text as Figure~\ref{fig1}, Table~\ref{tab1}, Table~\ref{tab2}, etc.
 
 \begin{figure}[H]
-\includegraphics[width=10.5 cm]{Definitions/logo-mdpi}
+\includegraphics[width=10.5 cm]{images/berkeley}
 \caption{This is a figure. Schemes follow the same formatting. If there are multiple panels, they should be listed as: (\textbf{a}) Description of what is contained in the first panel. (\textbf{b}) Description of what is contained in the second panel. Figures should be placed in the main text near to the first time they are cited. A caption on a single line should be centered.\label{fig1}}
 \end{figure}   
 \unskip
@@ -431,7 +534,11 @@ Mousavi, S., Sørensen, H. Functional logistic regression: a comparison of three
 Berrendero, J., Bueno-Larraz, B., Cuevas. A. On functional logistic regression: some conceptual issues., 2018.
 
 \bibitem[Glowacz(2018)]{ref-motors}
-Głowacz, A. Recognition of Acoustic Signals of Commutator Motors, {/em Appl. Sci.} {\bf 2018}, 8, 2630.
+Głowacz, A. Recognition of Acoustic Signals of Commutator Motors, {\em Appl. Sci.} {\bf 2018}, 8, 2630.
+
+\bibitem[Subasi(2020)]{subasi-logreg}
+Subasi, A. {\em Practical Machine Learning for Data Analysis Using Python.}; Academic Press: London, 2020.
+
 
 \bibitem[Pezzulini(1993)]{ref-pca}
 Author 1, S., Author 2, B. Title of Unpublished Work. \textit{Abbreviated Journal Name} year, \textit{phrase indicating stage of publication (submitted; accepted; in press)}.
