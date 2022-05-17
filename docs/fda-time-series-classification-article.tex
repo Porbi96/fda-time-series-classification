@@ -279,6 +279,57 @@ The database used for practical tests and visualizations contains voice recordin
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
+\subsection{Common preprocessing}
+
+The process flow is prepared for existing dataset of voice recordings, but can be easily changed to cover other issues. The flow starts with loading the data as a discrete time series of samples recorded, which is then transformed by Fourier transformation and normalized to the form of discrete function of frequency, where values are in between 0 and 1. The frequency range is limited by the voice recording device and in this case covers half of sample rate, which is 44100Hz, due to aliasing issues.
+
+\vspace{5mm}
+TODO: the preprocessing flow diagram or list can be put.
+\vspace{5mm}
+
+\subsection{Binary variant}
+
+For binary variant, any two of given labels can be used. In the demo, recordings of two groups of damaged motors are chosen: ones with two damaged teeth and ones with five damaged teeth. 
+
+\vspace{5mm}
+TODO: put graph of raw data after Fourier transformation for the groups chosen in demo.
+\vspace{5mm}
+
+Such prepared data is then transformed into functional dataset by use of basis spline data interpolation. In the example, 45 basis functions of 4th order is used. The values are found experimentally and might strongly depend on analyzed data. Due to dataset limitations of 30 recordings per group, 60 separate functions are prepared.
+
+\vspace{5mm}
+TODO: put graph of functional data.
+\vspace{5mm}
+
+Ready to be use functional data is then used in a binary functional logistic regression model fitting process, which is analogous to classical discrete version known for example in machine learning algorithms. The dataset is split into training and validation subsets. Thereafter the model is taught on training data, trying to fit coefficients to gain best accuracy. Final model score is obtained on validation subset, which is unknown to model during the fitting process.
+
+For the dataset of two groups of motors model accuracy is up to 88 percent. The result depends on the dataset splitting method a lot, due to small size of the dataset. Populating data could increase the model stability. 
+
+\vspace{5mm}
+TODO: put graph of functional data after classification.
+\vspace{5mm}
+
+\subsection{Multiclass variant}
+
+The multiclass variant is suitable for three or more labels. Implementation is tested on three separate classes of motor damage, containing 30 voice recordings each.
+
+\vspace{5mm}
+TODO: put graph of raw data after Fourier transformation for the groups chosen in demo.
+\vspace{5mm}
+
+The way data is transformed into functional basis spline functions remains the same as in binary variant. Due to choose of three classes, 90 functions are created, each containing info about different voice recording. 
+
+\vspace{5mm}
+TODO: put graph of functional data.
+\vspace{5mm}
+
+Prepared and labeled data is used in multiclass functional logistic regression model in similar way as in the binary variant, so the dataset is once again split into training and validation subsets in the same proportion. Model after fitting process gains around 77 percent of accuracy when tested on validation subset. The result is again depend on the splitting method due to small size of dataset.
+
+\vspace{5mm}
+TODO: put graph of functional data after classification.
+\vspace{5mm}
+
+
 This section may be divided by subheadings. It should provide a concise and precise description of the experimental results, their interpretation as well as the experimental conclusions that can be drawn.
 \subsection{Subsection}
 \subsubsection{Subsubsection}
