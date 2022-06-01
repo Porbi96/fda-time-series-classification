@@ -96,7 +96,7 @@ AGH University of Science \& Technology; e-mail@e-mail.com, jb@agh.edu.pl}
 
 
 % Contact information of the corresponding author
-\corres{Correspondence: jb@agh.edu.pl;}
+\corres{Correspondence: jb@agh.edu.pl;} 
 
 % Current address and/or shared authorship
 
@@ -154,13 +154,29 @@ AGH University of Science \& Technology; e-mail@e-mail.com, jb@agh.edu.pl}
 
 Functional data is the way of data interpretation where each subject is considered as a continuous curve. This field became more popular in recent years in various fields of science, for example biology and economics. Hence, with the rapid popularity grow, new sub-field of statistics appeared, called functional data analysis (FDA). Due to high dimensionality of considered data, many approaches of FDA are based on basis expansions and principle components analysis. Another part of FDA, used for example in case of time series analysis, is data classification. In this case, methods analogical to existing in traditional statistics can be used. 
 
-Many researchers have already presented several methods of FDA, including funtional logistic regression \cite{ramsay-logreg, ramsay-logreg2} and functional principal component analysis \cite{besse-pca, pezzulini-pca}. Mousavi and Sørensen made great comparison of several methods of functional logistic regression \cite{logreg-comparison}, and Berrendero et al. described possible issues and problems with implementation \cite{logreg-issues}.
+Many researchers have already presented several methods of FDA, including funtional logistic regression \cite{ramsay-logreg, ramsay-logreg2, ramsay1982data} and functional principal component analysis \cite{besse-pca, pezzulini-pca}. Mousavi and Sørensen made great comparison of several methods of functional logistic regression \cite{logreg-comparison}, and Berrendero et al. described possible issues and problems with implementation \cite{logreg-issues}.
 
 In this paper the general approach and proposed implementation of time series data classification using functional logistic regression both in binary and multiclass variants is presented. To handle the dimensionality of data, voice recordings of commutator motors described in \cite{ref-motors}, B-spline functions of parametrized order are used.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Logistic Regression}
-\subsection{Binary variant}
+
+\section{Methods and Materials}
+\subsection{Functional data analysis}
+Functional data analysis is the way of analysis where data is in the form of functions, images or other more general objects, even with infinite dimension. Historically, first approach of using such a way of analysis was written down by Grenander \cite{grenander1950stochastic} and Rao \cite{rao1958some} in 1950s, but the term "functional data analysis" was firstly introduced and described by Ramsay et. al. \cite{ramsay-logreg, ramsay-logreg2, ramsay1982data}. Great modern review of this field of stochastics and statiscics is made by Wang et. al. \cite{wang2016functional}. As FDA is a collection of statistical techniques for functions, it tries to answer many questions similar to ones existing in classic statistics and data analysis, like "what is the main way in which one curve differs from another". The big advantage of FDA is, that instead of considering just the given data and curves as they are, their rates of changes (or derivatives) can be described as well.
+
+As functional data is a general term, it can cover several real data examples collected in several different ways. One of approaches is to use series of samples (if ordered in time, then it will be time series) and interpolate the space between particular samples. This way functional data analysis deals with the finite resolution of physical devices. However, data can be stored in other ways and can be of shape completely different than one-dimensional series. One example is to use principal component analysis on complex, high-resolution spectroscopic surveys \cite{Patil_2022}. Neural networks can be fed with functional data as well \cite{rossi2005representation}.
+
+While introducing FDA, Ramsay showed a difference between a \emph{standard} and \emph{functional analytic view} of data and the generalization of vectors \cite{ramsay1982data}. All elements of finite dimensional vectors can be represented as weighted sums of a finite number \emph{p} of \emph{basis vectors} or, in functional world, \emph{basis functions}. Basis function is a tool which helps with producing a complex functions $ f(t) $ by stacking $ k $ more simple ones, $ \theta_k(t) $, which Ramsay calls \emph{mathematical Lego}. Thus, the linear combination of basis functions can be described:
+
+\begin{linenomath}
+\begin{equation}
+f(x) = a_1 \theta_1(t) + a_2 \theta_2(t) + ... + a_k \theta_k(t)
+\end{equation}
+\end{linenomath}
+
+second very important concept in functional data analysis are \emph{spline functions} (splines). These functions are formed by joining polynomials together at fixed points called \emph{knots}. 
+
+\subsection{Binary Logistic Regression}
 Logistic regression is a widely used classification concept. It is mainly applied, and was originally described, for binary problems, however its multiclass version (Softmax) is also well known. As a statistical method, logistic regression allows to measure how several independent variables $ x_1, x_2, ...,  x_k $ affect binary dependent variable $Y$, for example what is the influence of time spent on watching TV series and learning (two independent variables) on the exam results (if passed or not). 
 
 In typical mathematical problems both dependent and independent variables are continuous. If so, the relation of linear regression can be established:
@@ -211,7 +227,7 @@ t = \alpha + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_k x_k,
 where $ \alpha $ is a constant bias and $ \beta_i $ is a coefficient describing the influence of $ x_i $ on the result.
 
 \vspace{5mm}
-\subsection{Multiclass variant}
+\subsection{Multiclass logistic regresssion (softmax regression) }
 
 Many mathematical problems demand a classification solutions which are suitable for more than two classes, for example blood groups. For this case, the binary variant of logistic regression was expanded and generalized to a softmax function:
 \begin{linenomath}
@@ -230,7 +246,7 @@ In general, the role of softmax function is to normalize vector $\vec{z}$ so the
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Functional Logistic Regression}
+\subsection{Functional Logistic Regression}
 
 Functional data analysis is based on a conception of considering data as a continuous and smooth function. In fact, many physical processes satisfy this condition. Thus, for example, instead of analysing each discrete sample of time series individually, an interpolated continuous curve can be made and the process can be considered as whole, integral observation.
 
@@ -268,16 +284,18 @@ x_i(t) = \sum_{k=1}^{K_x} c_{ik} \theta_k (t) = {\bf c}_i^T \theta (t),
 \end{linenomath}
 where $\theta_k (t)$ and $\omega_l (t)$ represent the $k$th and $l$th basis functions evaluated at time $t$.
 
+\subsection{Universal motor audio recording case study}
+
+\section{Results}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Materials and Methods}
+\subsection{Computational setup}
 
 The practical implementation of functional logistic regression in binary variant is based on and developed from Python library for functional data analysis \href{https://fda.readthedocs.io/en/latest/index.html}{scikit-fda}. The multiclass variant is made from scratch, based on the same library as well as solutions for classical approaches stored in \href{https://scikit-learn.org/}{scikit-learn} library. The final proposed implementation is stored as a public, open-source \href{https://github.com/Porbi96/fda-time-series-classification}{GitHub repository}. The repository contains also a demonstration with use of mock data and practical use based on data possessed.
 
 The database used for practical tests and visualizations contains voice recordings of commutator motors both damaged and undamaged. More information about the data can be found in \cite{ref-motors}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Results}
 
 \subsection{Common preprocessing}
 
@@ -330,135 +348,135 @@ TODO: put graph of functional data after classification.
 \vspace{5mm}
 
 
-This section may be divided by subheadings. It should provide a concise and precise description of the experimental results, their interpretation as well as the experimental conclusions that can be drawn.
-\subsection{Subsection}
-\subsubsection{Subsubsection}
+% This section may be divided by subheadings. It should provide a concise and precise description of the experimental results, their interpretation as well as the experimental conclusions that can be drawn.
+% \subsection{Subsection}
+% \subsubsection{Subsubsection}
 
-Bulleted lists look like this:
-\begin{itemize}
-\item	First bullet;
-\item	Second bullet;
-\item	Third bullet.
-\end{itemize}
+% Bulleted lists look like this:
+% \begin{itemize}
+% \item	First bullet;
+% \item	Second bullet;
+% \item	Third bullet.
+% \end{itemize}
 
-Numbered lists can be added as follows:
-\begin{enumerate}
-\item	First item; 
-\item	Second item;
-\item	Third item.
-\end{enumerate}
+% Numbered lists can be added as follows:
+% \begin{enumerate}
+% \item	First item; 
+% \item	Second item;
+% \item	Third item.
+% \end{enumerate}
 
-The text continues here. 
+% The text continues here. 
 
-\subsection{Figures, Tables and Schemes}
+% \subsection{Figures, Tables and Schemes}
 
-All figures and tables should be cited in the main text as Figure~\ref{fig1}, Table~\ref{tab1}, Table~\ref{tab2}, etc.
+% All figures and tables should be cited in the main text as Figure~\ref{fig1}, Table~\ref{tab1}, Table~\ref{tab2}, etc.
 
-\begin{figure}[H]
-\includegraphics[width=10.5 cm]{images/berkeley}
-\caption{This is a figure. Schemes follow the same formatting. If there are multiple panels, they should be listed as: (\textbf{a}) Description of what is contained in the first panel. (\textbf{b}) Description of what is contained in the second panel. Figures should be placed in the main text near to the first time they are cited. A caption on a single line should be centered.\label{fig1}}
-\end{figure}   
-\unskip
+% \begin{figure}[H]
+% \includegraphics[width=10.5 cm]{images/berkeley}
+% \caption{This is a figure. Schemes follow the same formatting. If there are multiple panels, they should be listed as: (\textbf{a}) Description of what is contained in the first panel. (\textbf{b}) Description of what is contained in the second panel. Figures should be placed in the main text near to the first time they are cited. A caption on a single line should be centered.\label{fig1}}
+% \end{figure}   
+% \unskip
 
-\begin{table}[H] 
-\caption{This is a table caption. Tables should be placed in the main text near to the first time they are~cited.\label{tab1}}
-\newcolumntype{C}{>{\centering\arraybackslash}X}
-\begin{tabularx}{\textwidth}{CCC}
-\toprule
-\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}\\
-\midrule
-Entry 1		& Data			& Data\\
-Entry 2		& Data			& Data\\
-\bottomrule
-\end{tabularx}
-\end{table}
-\unskip
+% \begin{table}[H] 
+% \caption{This is a table caption. Tables should be placed in the main text near to the first time they are~cited.\label{tab1}}
+% \newcolumntype{C}{>{\centering\arraybackslash}X}
+% \begin{tabularx}{\textwidth}{CCC}
+% \toprule
+% \textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}\\
+% \midrule
+% Entry 1		& Data			& Data\\
+% Entry 2		& Data			& Data\\
+% \bottomrule
+% \end{tabularx}
+% \end{table}
+% \unskip
 
-\begin{table}[H]
-\caption{This is a wide table.\label{tab2}}
-	\begin{adjustwidth}{-\extralength}{0cm}
-		\newcolumntype{C}{>{\centering\arraybackslash}X}
-		\begin{tabularx}{\fulllength}{CCCC}
-			\toprule
-			\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}     & \textbf{Title 4}\\
-			\midrule
-			Entry 1		& Data			& Data			& Data\\
-			Entry 2		& Data			& Data			& Data \textsuperscript{1}\\
-			\bottomrule
-		\end{tabularx}
-	\end{adjustwidth}
-	\noindent{\footnotesize{\textsuperscript{1} This is a table footnote.}}
-\end{table}
+% \begin{table}[H]
+% \caption{This is a wide table.\label{tab2}}
+% 	\begin{adjustwidth}{-\extralength}{0cm}
+% 		\newcolumntype{C}{>{\centering\arraybackslash}X}
+% 		\begin{tabularx}{\fulllength}{CCCC}
+% 			\toprule
+% 			\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}     & \textbf{Title 4}\\
+% 			\midrule
+% 			Entry 1		& Data			& Data			& Data\\
+% 			Entry 2		& Data			& Data			& Data \textsuperscript{1}\\
+% 			\bottomrule
+% 		\end{tabularx}
+% 	\end{adjustwidth}
+% 	\noindent{\footnotesize{\textsuperscript{1} This is a table footnote.}}
+% \end{table}
 
-%\begin{listing}[H]
-%\caption{Title of the listing}
-%\rule{\columnwidth}{1pt}
-%\raggedright Text of the listing. In font size footnotesize, small, or normalsize. Preferred format: left aligned and single spaced. Preferred border format: top border line and bottom border line.
-%\rule{\columnwidth}{1pt}
-%\end{listing}
+% %\begin{listing}[H]
+% %\caption{Title of the listing}
+% %\rule{\columnwidth}{1pt}
+% %\raggedright Text of the listing. In font size footnotesize, small, or normalsize. Preferred format: left aligned and single spaced. Preferred border format: top border line and bottom border line.
+% %\rule{\columnwidth}{1pt}
+% %\end{listing}
 
-Text.
+% Text.
 
-Text.
+% Text.
 
-\subsection{Formatting of Mathematical Components}
+% \subsection{Formatting of Mathematical Components}
 
-This is the example 1 of equation:
-\begin{linenomath}
-\begin{equation}
-a = 1,
-\end{equation}
-\end{linenomath}
-the text following an equation need not be a new paragraph. Please punctuate equations as regular text.
-%% If the documentclass option "submit" is chosen, please insert a blank line before and after any math environment (equation and eqnarray environments). This ensures correct linenumbering. The blank line should be removed when the documentclass option is changed to "accept" because the text following an equation should not be a new paragraph.
+% This is the example 1 of equation:
+% \begin{linenomath}
+% \begin{equation}
+% a = 1,
+% \end{equation}
+% \end{linenomath}
+% the text following an equation need not be a new paragraph. Please punctuate equations as regular text.
+% %% If the documentclass option "submit" is chosen, please insert a blank line before and after any math environment (equation and eqnarray environments). This ensures correct linenumbering. The blank line should be removed when the documentclass option is changed to "accept" because the text following an equation should not be a new paragraph.
 
-This is the example 2 of equation:
-\begin{adjustwidth}{-\extralength}{0cm}
-\begin{equation}
-a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z
-\end{equation}
-\end{adjustwidth}
+% This is the example 2 of equation:
+% \begin{adjustwidth}{-\extralength}{0cm}
+% \begin{equation}
+% a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z
+% \end{equation}
+% \end{adjustwidth}
 
-% Example of a page in landscape format (with table and table footnote).
-%\startlandscape
-%\begin{table}[H] %% Table in wide page
-%\caption{This is a very wide table.\label{tab3}}
-%	\begin{tabularx}{\textwidth}{CCCC}
-%		\toprule
-%		\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}	& \textbf{Title 4}\\
-%		\midrule
-%		Entry 1		& Data			& Data			& This cell has some longer content that runs over two lines.\\
-%		Entry 2		& Data			& Data			& Data\textsuperscript{1}\\
-%		\bottomrule
-%	\end{tabularx}
-%	\begin{adjustwidth}{+\extralength}{0cm}
-%		\noindent\footnotesize{\textsuperscript{1} This is a table footnote.}
-%	\end{adjustwidth}
-%\end{table}
-%\finishlandscape
+% % Example of a page in landscape format (with table and table footnote).
+% %\startlandscape
+% %\begin{table}[H] %% Table in wide page
+% %\caption{This is a very wide table.\label{tab3}}
+% %	\begin{tabularx}{\textwidth}{CCCC}
+% %		\toprule
+% %		\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}	& \textbf{Title 4}\\
+% %		\midrule
+% %		Entry 1		& Data			& Data			& This cell has some longer content that runs over two lines.\\
+% %		Entry 2		& Data			& Data			& Data\textsuperscript{1}\\
+% %		\bottomrule
+% %	\end{tabularx}
+% %	\begin{adjustwidth}{+\extralength}{0cm}
+% %		\noindent\footnotesize{\textsuperscript{1} This is a table footnote.}
+% %	\end{adjustwidth}
+% %\end{table}
+% %\finishlandscape
 
-% Example of a figure that spans the whole page width. The same concept works for tables, too.
-\begin{figure}[H]
-\begin{adjustwidth}{-\extralength}{0cm}
-\centering
-\includegraphics[width=13.5cm]{Definitions/logo-mdpi}
-\end{adjustwidth}
-\caption{This is a wide figure.\label{fig2}}
-\end{figure}  
+% % Example of a figure that spans the whole page width. The same concept works for tables, too.
+% \begin{figure}[H]
+% \begin{adjustwidth}{-\extralength}{0cm}
+% \centering
+% \includegraphics[width=13.5cm]{Definitions/logo-mdpi}
+% \end{adjustwidth}
+% \caption{This is a wide figure.\label{fig2}}
+% \end{figure}  
 
-Please punctuate equations as regular text. Theorem-type environments (including propositions, lemmas, corollaries etc.) can be formatted as follows:
-%% Example of a theorem:
-\begin{Theorem}
-Example text of a theorem.
-\end{Theorem}
+% Please punctuate equations as regular text. Theorem-type environments (including propositions, lemmas, corollaries etc.) can be formatted as follows:
+% %% Example of a theorem:
+% \begin{Theorem}
+% Example text of a theorem.
+% \end{Theorem}
 
-The text continues here. Proofs must be formatted as follows:
+% The text continues here. Proofs must be formatted as follows:
 
-%% Example of a proof:
-\begin{proof}[Proof of Theorem 1]
-Text of the proof. Note that the phrase ``of Theorem 1'' is optional if it is clear which theorem is being referred to.
-\end{proof}
-The text continues here.
+% %% Example of a proof:
+% \begin{proof}[Proof of Theorem 1]
+% Text of the proof. Note that the phrase ``of Theorem 1'' is optional if it is clear which theorem is being referred to.
+% \end{proof}
+% The text continues here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
@@ -469,11 +487,6 @@ Authors should discuss the results and how they can be interpreted from the pers
 \section{Conclusions}
 
 This section is not mandatory, but can be added to the manuscript if the discussion is unusually long or complex.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Patents}
-
-This section is not mandatory, but may be added if there are patents resulting from the work reported in this manuscript.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{6pt} 
@@ -487,25 +500,22 @@ This section is not mandatory, but may be added if there are patents resulting f
 % \supplementary{The following supporting information can be downloaded at: \linksupplementary{s1}, Figure S1: title; Table S1: title; Video S1: title. A supporting video article is available at doi: link.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\authorcontributions{For research articles with several authors, a short paragraph specifying their individual contributions must be provided. The following statements should be used ``Conceptualization, X.X. and Y.Y.; methodology, X.X.; software, X.X.; validation, X.X., Y.Y. and Z.Z.; formal analysis, X.X.; investigation, X.X.; resources, X.X.; data curation, X.X.; writing---original draft preparation, X.X.; writing---review and editing, X.X.; visualization, X.X.; supervision, X.X.; project administration, X.X.; funding acquisition, Y.Y. All authors have read and agreed to the published version of the manuscript.'', please turn to the  \href{http://img.mdpi.org/data/contributor-role-instruction.pdf}{CRediT taxonomy} for the term explanation. Authorship must be limited to those who have contributed substantially to the work~reported.}
+\authorcontributions{For research articles with several authors, a short paragraph specifying their individual contributions must be provided. The following statements should be used ``Conceptualization, J.B. ; methodology, J.B.; software, J.P.; validation, J.P. and J.B.; formal analysis, J.P. and J.B; investigation, J.P.; resources, J.B.; data curation, J.P.; writing---original draft preparation, J.P.; writing---review and editing, J.P. and J.B.; visualization, J.P.; supervision, J.B.; project administration, J.B.; funding acquisition, J.B. All authors have read and agreed to the published version of the manuscript.}
 
-\funding{Please add: ``This research received no external funding'' or ``This research was funded by NAME OF FUNDER grant number XXX.'' and  and ``The APC was funded by XXX''. Check carefully that the details given are accurate and use the standard spelling of funding agency names at \url{https://search.crossref.org/funding}, any errors may affect your future funding.}
+\funding{This research was funded by AGH’s Research University Excellence Initiative under project “Interpretable methods of process diagnosis using statistics and machine learning” and by Polish National Science Centre project “Process Fault Prediction and Detection” contract no. UMO-2021/41/B/ST7/03851}
 
-\institutionalreview{In this section, you should add the Institutional Review Board Statement and approval number, if relevant to your study. You might choose to exclude this statement if the study did not require ethical approval. Please note that the Editorial Office might ask you for further information. Please add “The study was conducted in accordance with the Declaration of Helsinki, and approved by the Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies involving humans. OR “The animal study protocol was approved by the Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies involving animals. OR “Ethical review and approval were waived for this study due to REASON (please provide a detailed justification).” OR “Not applicable” for studies not involving humans or animals.}
+\institutionalreview{Not applicable.}
 
-\informedconsent{Any research article describing a study involving humans should contain this statement. Please add ``Informed consent was obtained from all subjects involved in the study.'' OR ``Patient consent was waived due to REASON (please provide a detailed justification).'' OR ``Not applicable'' for studies not involving humans. You might also choose to exclude this statement if the study did not involve humans.
+\informedconsent{Not applicable.}
 
-Written informed consent for publication must be obtained from participating patients who can be identified (including by the patients themselves). Please state ``Written informed consent has been obtained from the patient(s) to publish this paper'' if applicable.}
+\dataavailability{{\color{red}TODO}} 
 
-\dataavailability{In this section, please provide details regarding where data supporting reported results can be found, including links to publicly archived datasets analyzed or generated during the study. Please refer to suggested Data Availability Statements in section ``MDPI Research Data Policies'' at \url{https://www.mdpi.com/ethics}. If the study did not report any data, you might add ``Not applicable'' here.} 
+\acknowledgments{Authors would like express their gratitude to Prof. Adam Głowacz for providing data and Prof. Edyta Kucharska for administrative support}
 
-\acknowledgments{In this section you can acknowledge any support given which is not covered by the author contribution or funding sections. This may include administrative and technical support, or donations in kind (e.g., materials used for experiments).}
-
-\conflictsofinterest{Declare conflicts of interest or state ``The authors declare no conflict of interest.'' Authors must identify and declare any personal circumstances or interest that may be perceived as inappropriately influencing the representation or interpretation of reported research results. Any role of the funders in the design of the study; in the collection, analyses or interpretation of data; in the writing of the manuscript, or in the decision to publish the results must be declared in this section. If there is no role, please state ``The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript, or in the decision to publish the~results''.} 
+\conflictsofinterest{The authors declare no conflict of interest.} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Optional
-\sampleavailability{Samples of the compounds ... are available from the authors.}
+
 
 %% Only for journal Encyclopedia
 %\entrylink{The Link to this entry published on the encyclopedia platform.}
@@ -515,37 +525,14 @@ The following abbreviations are used in this manuscript:\\
 
 \noindent 
 \begin{tabular}{@{}ll}
-MDPI & Multidisciplinary Digital Publishing Institute\\
-DOAJ & Directory of open access journals\\
-TLA & Three letter acronym\\
-LD & Linear dichroism
+FDA & Functional Data Analysis\\
+ & \\
+ & \\
+ & 
 \end{tabular}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Optional
-\appendixtitles{no} % Leave argument "no" if all appendix headings stay EMPTY (then no dot is printed after "Appendix A"). If the appendix sections contain a heading then change the argument to "yes".
-\appendixstart
-\appendix
-\section[\appendixname~\thesection]{}
-\subsection[\appendixname~\thesubsection]{}
-The appendix is an optional section that can contain details and data supplemental to the main text---for example, explanations of experimental details that would disrupt the flow of the main text but nonetheless remain crucial to understanding and reproducing the research shown; figures of replicates for experiments of which representative data are shown in the main text can be added here if brief, or as Supplementary Data. Mathematical proofs of results not central to the paper can be added as an appendix.
 
-\begin{table}[H] 
-\caption{This is a table caption.\label{tab5}}
-\newcolumntype{C}{>{\centering\arraybackslash}X}
-\begin{tabularx}{\textwidth}{CCC}
-\toprule
-\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}\\
-\midrule
-Entry 1		& Data			& Data\\
-Entry 2		& Data			& Data\\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\section[\appendixname~\thesection]{}
-All appendix sections must be cited in the main text. In the appendices, Figures, Tables, etc. should be labeled, starting with ``A''---e.g., Figure A1, Figure A2, etc.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{adjustwidth}{-\extralength}{0cm}
@@ -559,53 +546,14 @@ All appendix sections must be cited in the main text. In the appendices, Figures
 %=====================================
 % References, variant A: external bibliography
 %=====================================
-%\bibliography{your_external_BibTeX_file}
+\bibliography{bibliography.bib}
 
 %=====================================
 % References, variant B: internal bibliography
 %=====================================
-\begin{thebibliography}{999}
-% Reference 1
-\bibitem[Ramsay(1991)]{ramsay-logreg}
-Ramsay, J., Dalzell, C. Some tools for functional data analysis. {\em Journal of the Royal Statistical Society, Series B} {\bf 2008}.
-% Reference 2
-\bibitem[Ramsay(1997)]{ramsay-logreg2}
-Ramsay, J., Silverman, B. {\em Functional Data Analysis}; Springer: New York, 1997.
-% Reference 3
-\bibitem[Besse(1986)]{besse-pca}
-Besse, P., Ramsay, J. Principal components analysis of sampled functions. {\em Psychometrika}, 1986.
-% Reference 4
-\bibitem[Pezzulini(1993)]{pezzulini-pca}
-Pezzulini, S., Silverman, B. Some properties of smoothed principal components analysis for functional data. {\em Computational Statistics}, 1993.
+% \begin{thebibliography}{999}
 
-\bibitem[Mousavi(2018)]{logreg-comparison}
-Mousavi, S., Sørensen, H. Functional logistic regression: a comparison of three methods. {\em Journal of Statistical Computation and Simulation}, {\bf 2018}, 88:2, 250-268.
-
-\bibitem[Berrendero(2018)]{logreg-issues}
-Berrendero, J., Bueno-Larraz, B., Cuevas. A. On functional logistic regression: some conceptual issues., 2018.
-
-\bibitem[Glowacz(2018)]{ref-motors}
-Głowacz, A. Recognition of Acoustic Signals of Commutator Motors, {\em Appl. Sci.} {\bf 2018}, 8, 2630.
-
-\bibitem[Subasi(2020)]{subasi-logreg}
-Subasi, A. {\em Practical Machine Learning for Data Analysis Using Python.}; Academic Press: London, 2020.
-
-
-\bibitem[Pezzulini(1993)]{ref-pca}
-Author 1, S., Author 2, B. Title of Unpublished Work. \textit{Abbreviated Journal Name} year, \textit{phrase indicating stage of publication (submitted; accepted; in press)}.
-% Reference 5
-\bibitem[Author5(year)]{ref-communication}
-Author 1, A.B. (University, City, State, Country); Author 2, C. (Institute, City, State, Country). Personal communication, 2012.
-% Reference 6
-\bibitem[Author6(year)]{ref-proceeding}
-Author 1, A.B.; Author 2, C.D.; Author 3, E.F. Title of presentation. In Proceedings of the Name of the Conference, Location of Conference, Country, Date of Conference (Day Month Year); Abstract Number (optional), Pagination (optional).
-% Reference 7
-\bibitem[Author7(year)]{ref-thesis}
-Author 1, A.B. Title of Thesis. Level of Thesis, Degree-Granting University, Location of University, Date of Completion.
-% Reference 8
-\bibitem[Author8(year)]{ref-url}
-Title of Site. Available online: URL (accessed on Day Month Year).
-\end{thebibliography}
+% \end{thebibliography}
 
 % If authors have biography, please use the format below
 %\section*{Short Biography of Authors}
