@@ -166,15 +166,24 @@ Functional data analysis is the way of analysis where data is in the form of fun
 
 As functional data is a general term, it can cover several real data examples collected in several different ways. One of approaches is to use series of samples (if ordered in time, then it will be time series) and interpolate the space between particular samples. This way functional data analysis deals with the finite resolution of physical devices. However, data can be stored in other ways and can be of shape completely different than one-dimensional series. One example is to use principal component analysis on complex, high-resolution spectroscopic surveys \cite{Patil_2022}. Neural networks can be fed with functional data as well \cite{rossi2005representation}.
 
-While introducing FDA, Ramsay showed a difference between a \emph{standard} and \emph{functional analytic view} of data and the generalization of vectors \cite{ramsay1982data}. All elements of finite dimensional vectors can be represented as weighted sums of a finite number \emph{p} of \emph{basis vectors} or, in functional world, \emph{basis functions}. Basis function is a tool which helps with producing a complex functions $ f(t) $ by stacking $ k $ more simple ones, $ \theta_k(t) $, which Ramsay calls \emph{mathematical Lego}. Thus, the linear combination of basis functions can be described:
+While introducing FDA, Ramsay showed a difference between a \emph{standard} and \emph{functional analytic view} of data and the generalization of vectors \cite{ramsay1982data}. All elements of finite dimensional vectors can be represented as weighted sums of a finite number \emph{p} of \emph{basis vectors} or, in functional world, \emph{basis functions}. Basis function is a tool which helps with producing a complex functions $ f(t) $ by stacking $ k $ more simple ones, $ \phi_k(t) $, which Ramsay calls \emph{mathematical Lego}. Thus, the linear combination of basis functions can be described:
 
 \begin{linenomath}
 \begin{equation}
-f(x) = a_1 \theta_1(t) + a_2 \theta_2(t) + ... + a_k \theta_k(t)
+f(x) = a_1 \phi_1(t) + a_2 \phi_2(t) + ... + a_k \phi_k(t)
 \end{equation}
 \end{linenomath}
 
-second very important concept in functional data analysis are \emph{spline functions} (splines). These functions are formed by joining polynomials together at fixed points called \emph{knots}. 
+Second very important concept in functional data analysis are \emph{spline functions} (splines). These functions are formed by joining polynomials together at fixed points called \emph{knots}, forming together an approximation of origin function $ f(t) $. Assume there is function $ f(t) $ in $ {\Bbb R} $ and there is a need to approximate its values within interval limited from both sides by lower boundary $ t_L $ and upper boundary $ t_U $. In such interval, there can be made $ L+1 $ sub-intervals $ \xi_l $ separated by $ L $ knots. In each knot two polynomials must join together smoothly, so the derivative (for all degrees up to one less than the polynomials degree) of connected splines exists.
+
+\begin{figure}[H]
+\includegraphics[width=10.5 cm]{images/splines_example.png}
+\caption{Sample spline functions of second (left, linear) and third (right, quadratic) orders with knots at 0.5 (example based on \href{https://www.psych.mcgill.ca/misc/fda/ex-basis-b1.html}{Ramsay's introduction into FDA}.)}
+\end{figure}
+\unskip
+\vspace{5mm}
+
+The figure above presents two examples of spline functions, for second and third order, with one knot joining together two splines. If each polynomial is of first degree (straight line, order 2 splines), then in knots derivatives up to degree 0 must match, so in this example polynomials must have the same values at connecting points. As the second spline function has already one point defined by knot and previous spline, then it looses only one degree of freedom instead of two. Similar situation is with spline functions of third order. They derivatives at knot for two connecting second degree polynomials matches up to first degree. The second spline has limited points of freedom to just one because of the constraints at connecting point: value and the slope described by the derivative of first polynomial at this point.
 
 \subsection{Binary Logistic Regression}
 Logistic regression is a widely used classification concept. It is mainly applied, and was originally described, for binary problems, however its multiclass version (Softmax) is also well known. As a statistical method, logistic regression allows to measure how several independent variables $ x_1, x_2, ...,  x_k $ affect binary dependent variable $Y$, for example what is the influence of time spent on watching TV series and learning (two independent variables) on the exam results (if passed or not). 
@@ -284,11 +293,12 @@ x_i(t) = \sum_{k=1}^{K_x} c_{ik} \theta_k (t) = {\bf c}_i^T \theta (t),
 \end{linenomath}
 where $\theta_k (t)$ and $\omega_l (t)$ represent the $k$th and $l$th basis functions evaluated at time $t$.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Universal motor audio recording case study}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Computational setup}
 
 The practical implementation of functional logistic regression in binary variant is based on and developed from Python library for functional data analysis \href{https://fda.readthedocs.io/en/latest/index.html}{scikit-fda}. The multiclass variant is made from scratch, based on the same library as well as solutions for classical approaches stored in \href{https://scikit-learn.org/}{scikit-learn} library. The final proposed implementation is stored as a public, open-source \href{https://github.com/Porbi96/fda-time-series-classification}{GitHub repository}. The repository contains also a demonstration with use of mock data and practical use based on data possessed.
