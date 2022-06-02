@@ -293,8 +293,11 @@ x_i(t) = \sum_{k=1}^{K_x} c_{ik} \theta_k (t) = {\bf c}_i^T \theta (t),
 \end{linenomath}
 where $\theta_k (t)$ and $\omega_l (t)$ represent the $k$th and $l$th basis functions evaluated at time $t$.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Universal motor audio recording case study}
+
+Data used in the article comes from work written by A. Głowacz \cite{ref-motors}. In the paper, author describes an approach to detect faults of commutator motors basing on acoustic data. Dataset is made of eight sets, each set contains recordings of one of two motors in different level of damage, collected with help of smartphone built-in microphone and then trasformed to Fourier frequency domain. To extract features of acoustic data and classify results, new extraction Method of Selection of Amplitudes of Frequency Ratio of 27\% Multiexpanded 4 Groups was used. It was then compared with well-known SVM classifier approach. 
+
+Author noticed, that if new data is collected with help of the same microphone as learning data, the results can lead to potentially high detection level simultaneously keeping the overall low cost of used tools. These results led to conclusion, that the approach could be developed in the future.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
