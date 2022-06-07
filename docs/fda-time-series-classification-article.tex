@@ -312,72 +312,71 @@ The database used for practical tests and visualizations contains voice recordin
 
 \subsection{Common preprocessing}
 
-The process flow is prepared for existing dataset of voice recordings, but can be easily changed to cover other issues. The flow starts with loading the data as a discrete time series of samples recorded, which is then transformed by Fourier transformation and normalized to the form of discrete function of frequency, where values are in between 0 and 1. The frequency range is limited by the voice recording device and in this case covers half of sample rate, which is 44100Hz, due to aliasing issues.
+The process flow is prepared for existing dataset of one second long voice recordings, but can be easily changed to cover other issues. The flow starts with loading the data as a discrete time series of samples recorded, which is then transformed by Fourier transformation and normalized to the form of discrete function of frequency, where values are in between 0 and 1. The frequency range is limited by the voice recording device and in this case covers half of sample rate, which is 44100Hz, due to aliasing issues.
 
 \vspace{5mm}
-TODO: the preprocessing flow diagram or list can be put.
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{images/preprocessing_flow}
+\caption{Data preprocessing flow.}
+\end{figure}
+\unskip
+\vspace{5mm}
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{images/common_preprocessing}
+\caption{Diagram showing the raw data before (left) and result after (right) preprocessing.}
+\end{figure}
+\unskip
 \vspace{5mm}
 
 \subsection{Binary variant}
 
-For binary variant, any two of given labels can be used. In the demo, recordings of two groups of damaged motors are chosen: ones with two damaged teeth and ones with five damaged teeth. 
+For binary variant, any two of given labels can be used. In the demo, recordings of two groups of damaged motors are chosen: ones with two damaged gearing teeth and ones with five damaged teeth. To keep visualization clear, plots in this subsection covers only three samples from the dataset.
 
-\vspace{5mm}
-TODO: put graph of raw data after Fourier transformation for the groups chosen in demo.
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{images/combined_preprocessed_data}
+\caption{Chart containing three samples of recordings after preprocessing.}
+\end{figure}
+\unskip
 \vspace{5mm}
 
 Such prepared data is then transformed into functional dataset by use of basis spline data interpolation. In the example, 45 basis functions of 4th order is used. The values are found experimentally and might strongly depend on analyzed data. Due to dataset limitations of 30 recordings per group, 60 separate functions are prepared.
 
 \vspace{5mm}
-TODO: put graph of functional data.
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{images/basis_interpolation}
+\caption{The same three samples interpolated with basis spline functions.}
+\end{figure}
+\unskip
 \vspace{5mm}
 
-Ready to be use functional data is then used in a binary functional logistic regression model fitting process, which is analogous to classical discrete version known for example in machine learning algorithms. The dataset is split into training and validation subsets. Thereafter the model is taught on training data, trying to fit coefficients to gain best accuracy. Final model score is obtained on validation subset, which is unknown to model during the fitting process.
+Such interpolation causes that the dynamics of data is partially lost, but samples' features are still included. Ready to be use functional data is then used in a binary functional logistic regression model fitting process, which is analogous to classical discrete version known for example in machine learning algorithms. The dataset is split into training and validation subsets. Thereafter the model is taught on training data, trying to fit coefficients to gain best accuracy. Final model score is obtained on validation subset, which is unknown to model during the fitting process.
 
 For the dataset of two groups of motors model accuracy is up to 88 percent. The result depends on the dataset splitting method a lot, due to small size of the dataset. Populating data could increase the model stability. 
 
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{images/binary_classification}
+\caption{Binary classified validation subset.}
+\end{figure}
+\unskip
 \vspace{5mm}
-TODO: put graph of functional data after classification.
-\vspace{5mm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Multiclass variant}
 
-The multiclass variant is suitable for three or more labels. Implementation is tested on three separate classes of motor damage, containing 30 voice recordings each.
-
-\vspace{5mm}
-TODO: put graph of raw data after Fourier transformation for the groups chosen in demo.
-\vspace{5mm}
+The multiclass variant is suitable for three or more labels. Implementation is tested on three separate classes of motor damage - damaged gearing, one broken gearing tooth and two broken teeth, containing 30 voice recordings each.
 
 The way data is transformed into functional basis spline functions remains the same as in binary variant. Due to choose of three classes, 90 functions are created, each containing info about different voice recording. 
 
-\vspace{5mm}
-TODO: put graph of functional data.
-\vspace{5mm}
-
 Prepared and labeled data is used in multiclass functional logistic regression model in similar way as in the binary variant, so the dataset is once again split into training and validation subsets in the same proportion. Model after fitting process gains around 77 percent of accuracy when tested on validation subset. The result is again depend on the splitting method due to small size of dataset.
 
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{images/multiclass_classification}
+\caption{Multiclass classified validation subset.}
+\end{figure}
+\unskip
 \vspace{5mm}
-TODO: put graph of functional data after classification.
-\vspace{5mm}
 
-
-% This section may be divided by subheadings. It should provide a concise and precise description of the experimental results, their interpretation as well as the experimental conclusions that can be drawn.
-% \subsection{Subsection}
-% \subsubsection{Subsubsection}
-
-% Bulleted lists look like this:
-% \begin{itemize}
-% \item	First bullet;
-% \item	Second bullet;
-% \item	Third bullet.
-% \end{itemize}
-
-% Numbered lists can be added as follows:
-% \begin{enumerate}
-% \item	First item; 
-% \item	Second item;
-% \item	Third item.
-% \end{enumerate}
 
 % The text continues here. 
 
@@ -494,7 +493,9 @@ TODO: put graph of functional data after classification.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
 
-Authors should discuss the results and how they can be interpreted from the perspective of previous studies and of the working hypotheses. The findings and their implications should be discussed in the broadest context possible. Future research directions may also be highlighted.
+As found in \cite{ref-motors} the corelation between type of damage and acoustic response is significant. While preparing samples it is very important to keep similar environment (distance between measured tool and microphone etc.) and use the same devices such as microphones. Possible additional samples should be recorded with the same microphone as well. As long as all samples are recorded by the exactly same microphone and in similar environment, the results should not differ.
+
+Basis spline interpolation can prevent  data from losing important features simultaneously allowing data size to be reduced. Crucial factor is number of spline functions used. Too few number of splines will result in losing major features of recorded data and too many splines will extend the calculation and model fitting time, as well as increase size of data in case of saving it.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions}
