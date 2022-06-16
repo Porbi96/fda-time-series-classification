@@ -7,6 +7,7 @@
 
 %--------------------
 % Class Options:
+\usepackage{subcaption}
 %--------------------
 %----------
 % journal
@@ -176,10 +177,21 @@ f(x) = a_1 \phi_1(t) + a_2 \phi_2(t) + ... + a_k \phi_k(t)
 
 Second very important concept in functional data analysis are \emph{spline functions} (splines). These functions are formed by joining polynomials together at fixed points called \emph{knots}, forming together an approximation of origin function $ f(t) $. Assume there is function $ f(t) $ in $ {\Bbb R} $ and there is a need to approximate its values within interval limited from both sides by lower boundary $ t_L $ and upper boundary $ t_U $. In such interval, there can be made $ L+1 $ sub-intervals $ \xi_l $ separated by $ L $ knots. In each knot two polynomials must join together smoothly, so the derivative (for all degrees up to one less than the polynomials degree) of connected splines exists.
 
-\begin{figure}[H]
-\includegraphics[width=10.5 cm]{images/splines_example.png}
-\caption{Sample spline functions of second (left, linear) and third (right, quadratic) orders with knots at 0.5 (example based on \href{https://www.psych.mcgill.ca/misc/fda/ex-basis-b1.html}{Ramsay's introduction into FDA}.)}
-\end{figure}
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/spline_order2}
+        \caption{}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/spline_order3}
+        \caption{}
+    \end{subfigure}
+    \caption{Sample spline functions of second (a) and third (b) orders with limits at 0 and 1, and knots at 0.5.}
+\end{figure*}
 \unskip
 \vspace{5mm}
 
@@ -266,12 +278,7 @@ Many concepts described in functional data analysis are analogical to ones from 
 \end{equation}
 \end{linenomath}
 
-As the real processes are smooth and continuous, the derivatives of functions can be considered. For example, for the data on the graph below, derivative would allow to calculate the speed of growth.
-\begin{figure}[H]
-\includegraphics[width=10.5 cm]{images/berkeley}
-\caption{Sample curves of functional data - height of girls during their growing, based on \href{https://www.jstor.org/stable/1125347}{Berkeley growth study}.}
-\end{figure}
-\unskip
+As the real processes are smooth and continuous, the derivatives of functions can be considered, for example, to calculate the speed of growth.
 
 \vspace{5mm}
 Functional version of logistic regression takes many assumptions and similarities from classical approach as other FDA concepts. The sigmoid function (6) stays the same, but with continuous independent variable $ x(t) $ and coefficient function $ \beta(t)$. Thus, the following form of conditional success probability can be expressed as
@@ -321,9 +328,10 @@ The process flow is prepared for existing dataset of one second long voice recor
 \end{figure}
 \unskip
 \vspace{5mm}
+
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{images/common_preprocessing}
-\caption{Diagram showing the raw data before (left) and result after (right) preprocessing.}
+\caption{Diagram showing the example raw data before (left) and after (right) common preprocessing.}
 \end{figure}
 \unskip
 \vspace{5mm}
@@ -333,21 +341,14 @@ The process flow is prepared for existing dataset of one second long voice recor
 For binary variant, any two of given labels can be used. In the demo, recordings of two groups of damaged motors are chosen: ones with two damaged gearing teeth and ones with five damaged teeth. To keep visualization clear, plots in this subsection covers only three samples from the dataset.
 
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{images/combined_preprocessed_data}
-\caption{Chart containing three samples of recordings after preprocessing.}
+\includegraphics[width=\textwidth]{images/combined_data_with_splines}
+\caption{Charts containing two samples of recordings from different groups. Each chart combines a sample after preprocessing and the same sample after interpolation by basis spline functions.}
 \end{figure}
 \unskip
 \vspace{5mm}
 
 Such prepared data is then transformed into functional dataset by use of basis spline data interpolation. In the example, 45 basis functions of 4th order is used. The values are found experimentally and might strongly depend on analyzed data. Due to dataset limitations of 30 recordings per group, 60 separate functions are prepared.
 
-\vspace{5mm}
-\begin{figure}[H]
-\includegraphics[width=\textwidth]{images/basis_interpolation}
-\caption{The same three samples interpolated with basis spline functions.}
-\end{figure}
-\unskip
-\vspace{5mm}
 
 Such interpolation causes that the dynamics of data is partially lost, but samples' features are still included. Ready to be use functional data is then used in a binary functional logistic regression model fitting process, which is analogous to classical discrete version known for example in machine learning algorithms. The dataset is split into training and validation subsets. Thereafter the model is taught on training data, trying to fit coefficients to gain best accuracy. Final model score is obtained on validation subset, which is unknown to model during the fitting process.
 
@@ -355,7 +356,15 @@ For the dataset of two groups of motors model accuracy is up to 88 percent. The 
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{images/binary_classification}
-\caption{Binary classified validation subset.}
+\caption{Binary classified validation subset. Graph shows predicted classes for all samples. Missclassifications are highlighted by black dashed lines.}
+\end{figure}
+\unskip
+\vspace{5mm}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{images/confusion_matrix}
+\caption{Confusion matrix for validation subset.}
 \end{figure}
 \unskip
 \vspace{5mm}
@@ -368,11 +377,19 @@ The multiclass variant is suitable for three or more labels. Implementation is t
 
 The way data is transformed into functional basis spline functions remains the same as in binary variant. Due to choose of three classes, 90 functions are created, each containing info about different voice recording. 
 
-Prepared and labeled data is used in multiclass functional logistic regression model in similar way as in the binary variant, so the dataset is once again split into training and validation subsets in the same proportion. Model after fitting process gains around 77 percent of accuracy when tested on validation subset. The result is again depend on the splitting method due to small size of dataset.
+Prepared and labeled data is used in multiclass functional logistic regression model in similar way as in the binary variant, so the dataset is once again split into training and validation subsets in the same proportion. Model after fitting process gains around 67 percent of accuracy when tested on validation subset. The result is again depend on the splitting method due to small size of dataset.
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{images/multiclass_classification}
-\caption{Multiclass classified validation subset.}
+\caption{Multiclass classified validation subset. Graph shows predicted classes for all samples. Missclassifications are highlighted by black dashed lines.}
+\end{figure}
+\unskip
+\vspace{5mm}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{images/confusion_matrix_multiclass}
+\caption{Confusion matrix for validation subset.}
 \end{figure}
 \unskip
 \vspace{5mm}
