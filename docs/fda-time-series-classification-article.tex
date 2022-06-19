@@ -155,7 +155,7 @@ AGH University of Science \& Technology; e-mail@e-mail.com, jb@agh.edu.pl}
 
 Functional data is the way of data interpretation where each subject is considered as a continuous curve. This field became more popular in recent years in various fields of science, for example biology and economics. Hence, with the rapid popularity grow, new sub-field of statistics appeared, called functional data analysis (FDA). Due to high dimensionality of considered data, many approaches of FDA are based on basis expansions and principle components analysis. Another part of FDA, used for example in case of time series analysis, is data classification. In this case, methods analogical to existing in traditional statistics can be used. 
 
-Many researchers have already presented several methods of FDA, including funtional logistic regression \cite{ramsay-logreg, ramsay-logreg2, ramsay1982data} and functional principal component analysis \cite{besse-pca, pezzulini-pca}. Mousavi and Sørensen made great comparison of several methods of functional logistic regression \cite{logreg-comparison}, and Berrendero et al. described possible issues and problems with implementation \cite{logreg-issues}.
+Many researchers have already presented several methods of FDA, including funtional logistic regression  and functional principal component analysis (PCA). Ramsay et al. in \cite{ramsay-logreg2, ramsay1982data} described the foundations and concept of functional data analysis, along with theory and examples in statistics, and in \cite{ramsay-logreg} characterised tools for FDA. Besse et al. in  \cite{besse-pca} and later Pezzulini and Silverman in \cite{pezzulini-pca} described techniques for principal component analysis of data consisting of \textit{n} functions . Mousavi and Sørensen in  \cite{logreg-comparison} made great comparison of three major methods and use cases of functional logistic regression - dimension reduction via functional PCA, penalized functional regression and wavelet expansions combined with Least Absolute Shrinking and Seletion Operator penalization. Berrendero et al. in \cite{logreg-issues} described possible issues and problems with implementation of FDA. Denhere and Billor in \cite{denhere-robust-logreg} proposed robust approach to functional logistic regression, which allows parameter estimator to be resistant to outliers, simultaneously with keeping reduced dimension. Ratcliffe et al. in \cite{ratcliffe-pregnancies} used functional logistic regression to predict the probability of a high risk pregnancies and births. 
 
 In this paper the general approach and proposed implementation of time series data classification using functional logistic regression both in binary and multiclass variants is presented. To handle the dimensionality of data, voice recordings of commutator motors described in \cite{ref-motors}, B-spline functions of parametrized order are used.
 
@@ -163,7 +163,7 @@ In this paper the general approach and proposed implementation of time series da
 
 \section{Methods and Materials}
 \subsection{Functional data analysis}
-Functional data analysis is the way of analysis where data is in the form of functions, images or other more general objects, even with infinite dimension. Historically, first approach of using such a way of analysis was written down by Grenander \cite{grenander1950stochastic} and Rao \cite{rao1958some} in 1950s, but the term "functional data analysis" was firstly introduced and described by Ramsay et. al. \cite{ramsay-logreg, ramsay-logreg2, ramsay1982data}. Great modern review of this field of stochastics and statiscics is made by Wang et. al. \cite{wang2016functional}. As FDA is a collection of statistical techniques for functions, it tries to answer many questions similar to ones existing in classic statistics and data analysis, like "what is the main way in which one curve differs from another". The big advantage of FDA is, that instead of considering just the given data and curves as they are, their rates of changes (or derivatives) can be described as well.
+Functional data analysis is the way of analysis where data is in the form of functions, images or other more general objects, even with infinite dimension. Historically, first approach of using such a way of analysis was written down by Grenander \cite{grenander1950stochastic} and Rao \cite{rao1958some} in 1950s, but the term "functional data analysis" was firstly introduced and described by Ramsay et. al. \cite{ramsay-logreg, ramsay-logreg2, ramsay1982data}. Great modern review of this field of stochastics and statistics is made by Wang et. al. in \cite{wang2016functional}. As FDA is a collection of statistical techniques for functions, it tries to answer many questions similar to ones existing in classic statistics and data analysis, like "what is the main way in which one curve differs from another". The big advantage of FDA is, that instead of considering just the given data and curves as they are, their rates of changes (or derivatives) can be described as well.
 
 As functional data is a general term, it can cover several real data examples collected in several different ways. One of approaches is to use series of samples (if ordered in time, then it will be time series) and interpolate the space between particular samples. This way functional data analysis deals with the finite resolution of physical devices. However, data can be stored in other ways and can be of shape completely different than one-dimensional series. One example is to use principal component analysis on complex, high-resolution spectroscopic surveys \cite{Patil_2022}. Neural networks can be fed with functional data as well \cite{rossi2005representation}.
 
@@ -177,15 +177,15 @@ f(x) = a_1 \phi_1(t) + a_2 \phi_2(t) + ... + a_k \phi_k(t)
 
 Second very important concept in functional data analysis are \emph{spline functions} (splines). These functions are formed by joining polynomials together at fixed points called \emph{knots}, forming together an approximation of origin function $ f(t) $. Assume there is function $ f(t) $ in $ {\Bbb R} $ and there is a need to approximate its values within interval limited from both sides by lower boundary $ t_L $ and upper boundary $ t_U $. In such interval, there can be made $ L+1 $ sub-intervals $ \xi_l $ separated by $ L $ knots. In each knot two polynomials must join together smoothly, so the derivative (for all degrees up to one less than the polynomials degree) of connected splines exists.
 
-\begin{figure*}[t!]
+\begin{figure*}[b!]
     \centering
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{images/spline_order2}
         \caption{}
     \end{subfigure}%
     ~ 
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{images/spline_order3}
         \caption{}
@@ -304,14 +304,42 @@ where $\theta_k (t)$ and $\omega_l (t)$ represent the $k$th and $l$th basis func
 
 Data used in the article comes from work written by A. Głowacz \cite{ref-motors}. In the paper, author describes an approach to detect faults of commutator motors basing on acoustic data. Dataset is made of eight sets, each set contains recordings of one of two motors in different level of damage, collected with help of smartphone built-in microphone and then trasformed to Fourier frequency domain. To extract features of acoustic data and classify results, new extraction Method of Selection of Amplitudes of Frequency Ratio of 27\% Multiexpanded 4 Groups was used. It was then compared with well-known SVM classifier approach. 
 
+\vspace{5mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/drill-setup-diagram}
+\caption{Diagram of experimental setup of the measurements using smartphone (By A. Głowacz under CC BY 4.0, source: \cite{ref-motors}). Healthy and faulty motors were put next to smartphone's microphone. Recorded data was transfered to PC and processed with additional software, such as Matlab.}
+\end{figure}
+\unskip
+\vspace{5mm}
+
 Author noticed, that if new data is collected with help of the same microphone as learning data, the results can lead to potentially high detection level simultaneously keeping the overall low cost of used tools. These results led to conclusion, that the approach could be developed in the future.
+
+\vspace{5mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/drill-healthy}
+\caption{Healthy electric impact drill next to smartphone (By A. Głowacz under CC BY 4.0, source: \cite{ref-motors}).}
+\end{figure}
+\unskip
+\vspace{5mm}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/drill-broken-teeth}
+\caption{Electric impact drill with a faulty fan (5 broken rotor blades; indicated by the blue box). Recordings from such and similarly damaged drills were used by functional logistic regression classifiers later in this paper (By A. Głowacz under CC BY 4.0, source: \cite{ref-motors}).}
+\end{figure}
+\unskip
+\vspace{5mm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
 \subsection{Computational setup}
 
-The practical implementation of functional logistic regression in binary variant is based on and developed from Python library for functional data analysis \href{https://fda.readthedocs.io/en/latest/index.html}{scikit-fda}. The multiclass variant is made from scratch, based on the same library as well as solutions for classical approaches stored in \href{https://scikit-learn.org/}{scikit-learn} library. The final proposed implementation is stored as a public, open-source \href{https://github.com/Porbi96/fda-time-series-classification}{GitHub repository}. The repository contains also a demonstration with use of mock data and practical use based on data possessed.
+The practical implementation of functional logistic regression in binary variant is based on and developed from Python library for functional data analysis \href{https://fda.readthedocs.io/en/latest/index.html}{scikit-fda}. The library contains ready-to-use classes and methods for FDA purpose. Solution is fully compatible with \href{https://scikit-learn.org/}{scikit-learn} library and can be use along with standard data analysis and machine learning implementations. Basic element of the library is class \textit{FDataGrid}. It is used for representing functional data as a set of curves discretised in a grid of points. Other commonly used representation is class \textit{FDataBasis} or used later in this paper \textit{BSpline}. Both of them store data as functions' coefficients. Library implements also exploratory analysis package which deals with techniques to summarize, interpret and visualize functional data. Plotting methods are fully compatible with widely used Matplotlib. Another module contains scikit-learn machine learning algorithms implemented in version compatible with functional data. The library stores also example datasets, such as Berkeley growth study or Canadian weather data which allow user to understand FDA basics and implemented methods. Web page is full of examples as well, along with API references and tutorials.
+
+The multiclass variant of logistic regression is not stored in scikit-fda library. It is made from scratch, based on available binary version as well as solutions for classical approaches stored in scikit-learn. The final proposed implementation is stored as a public, open-source \href{https://github.com/Porbi96/fda-time-series-classification}{GitHub repository}. The repository contains also a demonstration with use of mock data and practical use based on data possessed.
 
 The database used for practical tests and visualizations contains voice recordings of commutator motors both damaged and undamaged. More information about the data can be found in \cite{ref-motors}.
 
@@ -319,7 +347,16 @@ The database used for practical tests and visualizations contains voice recordin
 
 \subsection{Common preprocessing}
 
-The process flow is prepared for existing dataset of one second long voice recordings, but can be easily changed to cover other issues. The flow starts with loading the data as a discrete time series of samples recorded, which is then transformed by Fourier transformation and normalized to the form of discrete function of frequency, where values are in between 0 and 1. The frequency range is limited by the voice recording device and in this case covers half of sample rate, which is 44100Hz, due to aliasing issues.
+The process flow is prepared for existing dataset of one second long voice recordings, but can be easily changed to cover other issues. The flow starts with loading the data as a discrete time series of samples recorded, which is then transformed by fast Fourier transformation and normalized to the form of discrete function of frequency, where values are in between 0 and 1. Normalization is made as follows:
+
+\begin{linenomath}
+\begin{equation}
+x_{iN}(f) = \frac{x_i(f) - min(x(f))}{max(x(f)) - min(x(f))}
+\end{equation}
+\end{linenomath}
+where $x(f)$ is a particular whole sample vector, $x_i$ is an $i$-th value of vector an $x_{iN}$ is a normalized value.
+
+The frequency range is limited by the voice recording device and in this case covers half of sample rate, which is 44100Hz, due to aliasing issues.
 
 \vspace{5mm}
 \begin{figure}[H]
@@ -331,18 +368,18 @@ The process flow is prepared for existing dataset of one second long voice recor
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{images/common_preprocessing}
-\caption{Diagram showing the example raw data before (left) and after (right) common preprocessing.}
+\caption{Diagram showing the example raw data before (left) and after (right) common preprocessing. Sample is transformed by fast Fourier transformation from time domain to frequency domain and then normalized to range between 0 and 1.}
 \end{figure}
 \unskip
 \vspace{5mm}
 
 \subsection{Binary variant}
 
-For binary variant, any two of given labels can be used. In the demo, recordings of two groups of damaged motors are chosen: ones with two damaged gearing teeth and ones with five damaged teeth. To keep visualization clear, plots in this subsection covers only three samples from the dataset.
+For binary variant, any two of given labels can be used. In the demo, recordings of two groups of damaged motors are chosen: ones with two damaged gear teeth and ones with five damaged teeth. To keep visualization clear, plots in this subsection covers only three samples from the dataset.
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{images/combined_data_with_splines}
-\caption{Charts containing two samples of recordings from different groups. Each chart combines a sample after preprocessing and the same sample after interpolation by basis spline functions.}
+\caption{Two samples of recordings from different groups of faulty drills. Each chart combines a sample after preprocessing and the same sample after interpolation by basis spline functions.}
 \end{figure}
 \unskip
 \vspace{5mm}
@@ -356,7 +393,7 @@ For the dataset of two groups of motors model accuracy is up to 88 percent. The 
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{images/binary_classification}
-\caption{Binary classified validation subset. Graph shows predicted classes for all samples. Missclassifications are highlighted by black dashed lines.}
+\caption{Binary classified validation subset. Graph shows predicted classes for all samples. Missclassifications are highlighted by black dashed lines and additionally pointed by black arrows.}
 \end{figure}
 \unskip
 \vspace{5mm}
@@ -364,7 +401,7 @@ For the dataset of two groups of motors model accuracy is up to 88 percent. The 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/confusion_matrix}
-\caption{Confusion matrix for validation subset.}
+\caption{Confusion matrix for validation subset. It compares predictions with true labels.}
 \end{figure}
 \unskip
 \vspace{5mm}
@@ -373,24 +410,65 @@ For the dataset of two groups of motors model accuracy is up to 88 percent. The 
 
 \subsection{Multiclass variant}
 
-The multiclass variant is suitable for three or more labels. Implementation is tested on three separate classes of motor damage - damaged gearing, one broken gearing tooth and two broken teeth, containing 30 voice recordings each.
+The multiclass variant is suitable for three or more labels. Implementation is tested on three separate classes of motor damage - one broken gear tooth, two and five broken teeth, each class containing 30 voice recordings.
 
 The way data is transformed into functional basis spline functions remains the same as in binary variant. Due to choose of three classes, 90 functions are created, each containing info about different voice recording. 
 
-Prepared and labeled data is used in multiclass functional logistic regression model in similar way as in the binary variant, so the dataset is once again split into training and validation subsets in the same proportion. Model after fitting process gains around 67 percent of accuracy when tested on validation subset. The result is again depend on the splitting method due to small size of dataset.
+Prepared and labeled data is used in multiclass functional logistic regression model in similar way as in the binary variant, so the dataset is once again split into training and validation subsets in the same proportion. Model after fitting process gains around 67 percent of accuracy when tested on validation subset. The result again depends on the splitting method due to small size of dataset. Small size causes that classifier sometimes stacked on local minimums, which leaded to calculate wrong coefficients. 
 
 \begin{figure}[H]
+\centering
 \includegraphics[width=\textwidth]{images/multiclass_classification}
-\caption{Multiclass classified validation subset. Graph shows predicted classes for all samples. Missclassifications are highlighted by black dashed lines.}
+\caption{Multiclass classified validation subset. Graph shows predicted classes for all samples. Missclassification is highlighted by black dashed lines.}
+\label{fig:multiclass}
 \end{figure}
 \unskip
 \vspace{5mm}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{images/confusion_matrix_multiclass}
-\caption{Confusion matrix for validation subset.}
-\end{figure}
+Confusion matrices below present results for different split methods, so for training and validation subsets containing different samples. The first one is made for the same subsets as the plot above. Following five matrices show results for different subsets, obtained via different seed number used in splitting method.
+
+
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/confusion_matrix_multiclass}
+        \caption{}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/confusion_matrix_multiclass_1}
+        \caption{}
+    \end{subfigure}
+    ~ 
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/confusion_matrix_multiclass_2}
+        \caption{}
+    \end{subfigure}
+
+    ~ 
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/confusion_matrix_multiclass_3}
+        \caption{}
+    \end{subfigure}
+    ~ 
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/confusion_matrix_multiclass_4}
+        \caption{}
+    \end{subfigure}
+    ~ 
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/confusion_matrix_multiclass_5}
+        \caption{}
+    \end{subfigure}
+    
+    \caption{Confusion matrices for different training and validation subsets made from the same datasets of three chosen classes. Figure a) presents classification results for subsets used in figure \ref{fig:multiclass}. Following matrices show results for various subsets obtained by use of different seed number in dataset splitting method. Figure d) presents an example of badly chosen seed number, which led to uneffective classifier training. This is due to small size of dataset.}
+\end{figure*}
 \unskip
 \vspace{5mm}
 
@@ -400,12 +478,6 @@ Prepared and labeled data is used in multiclass functional logistic regression m
 % \subsection{Figures, Tables and Schemes}
 
 % All figures and tables should be cited in the main text as Figure~\ref{fig1}, Table~\ref{tab1}, Table~\ref{tab2}, etc.
-
-% \begin{figure}[H]
-% \includegraphics[width=10.5 cm]{images/berkeley}
-% \caption{This is a figure. Schemes follow the same formatting. If there are multiple panels, they should be listed as: (\textbf{a}) Description of what is contained in the first panel. (\textbf{b}) Description of what is contained in the second panel. Figures should be placed in the main text near to the first time they are cited. A caption on a single line should be centered.\label{fig1}}
-% \end{figure}   
-% \unskip
 
 % \begin{table}[H] 
 % \caption{This is a table caption. Tables should be placed in the main text near to the first time they are~cited.\label{tab1}}
