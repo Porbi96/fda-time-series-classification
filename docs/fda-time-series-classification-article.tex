@@ -163,7 +163,7 @@ In this paper the general approach and proposed implementation of time series da
 
 \section{Methods and Materials}
 \subsection{Functional data analysis}
-Functional data analysis is the way of analysis where data is in the form of functions, images or other more general objects, even with infinite dimension. Historically, first approach of using such a way of analysis was written down by Grenander \cite{grenander1950stochastic} and Rao \cite{rao1958some} in 1950s, but the term "functional data analysis" was firstly introduced and described by Ramsay et. al. \cite{ramsay-logreg, ramsay-logreg2, ramsay1982data}. Great modern review of this field of stochastics and statistics is made by Wang et. al. in \cite{wang2016functional}. As FDA is a collection of statistical techniques for functions, it tries to answer many questions similar to ones existing in classic statistics and data analysis, like "what is the main way in which one curve differs from another". The big advantage of FDA is, that instead of considering just the given data and curves as they are, their rates of changes (or derivatives) can be described as well.
+Functional data analysis is the way of analysis where data is in the form of functions, images or other more general objects, even with infinite dimension. Historically, first approach of using such a way of analysis was written down by Grenander \cite{grenander1950stochastic} and Rao \cite{rao1958some} in 1950s, but the term "functional data analysis" was firstly introduced and described by Ramsay et. al. in \cite{ramsay-logreg, ramsay-logreg2, ramsay1982data}, along with foundations of the term. Thanks to these papers, new field of data analysis and statistics was created. Great modern review of this field of stochastics and statistics is made by Wang et. al. in \cite{wang2016functional}. As FDA is a collection of statistical techniques for functions, it tries to answer many questions similar to ones existing in classic statistics and data analysis, like "what is the main way in which one curve differs from another". The big advantage of FDA is, that instead of considering just the given data and curves as they are, their rates of changes (or derivatives) can be described as well.
 
 As functional data is a general term, it can cover several real data examples collected in several different ways. One of approaches is to use series of samples (if ordered in time, then it will be time series) and interpolate the space between particular samples. This way functional data analysis deals with the finite resolution of physical devices. However, data can be stored in other ways and can be of shape completely different than one-dimensional series. One example is to use principal component analysis on complex, high-resolution spectroscopic surveys \cite{Patil_2022}. Neural networks can be fed with functional data as well \cite{rossi2005representation}.
 
@@ -236,7 +236,7 @@ which domain is $ {\Bbb R} $.
 Practical uses of logistic regression are based on sigmoid function:
 \begin{linenomath}
 \begin{equation}
-f(t) = \frac{e^t}{1+e^t} = \frac{1}{1+e^-t},
+f(t) = \frac{e^t}{1+e^t} = \frac{1}{1+e^{-t}},
 \end{equation}
 \end{linenomath}
 which can return values between 0 and 1. Hence, the result of function can be considered as probability of predicted value accordance against the real value for a set of input variables. The $ t $ variable consists of linear combination of independent variables described above:
@@ -401,7 +401,7 @@ For the dataset of two groups of motors model accuracy is up to 88 percent. The 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/confusion_matrix}
-\caption{Confusion matrix for validation subset. It compares predictions with true labels.}
+\caption{Confusion matrix for validation subsets of two chosen classes: (A) - 2 teeth broken; (B) - 5 teeth broken. It compares predictions with true labels.}
 \end{figure}
 \unskip
 \vspace{5mm}
@@ -467,7 +467,7 @@ Confusion matrices below present results for different split methods, so for tra
         \caption{}
     \end{subfigure}
     
-    \caption{Confusion matrices for different training and validation subsets made from the same datasets of three chosen classes. Figure a) presents classification results for subsets used in figure \ref{fig:multiclass}. Following matrices show results for various subsets obtained by use of different seed number in dataset splitting method. Figure d) presents an example of badly chosen seed number, which led to uneffective classifier training. This is due to small size of dataset.}
+    \caption{Confusion matrices for different training and validation subsets made from the same datasets of three chosen classes: (A) - 1 tooth broken; (B) - 5 teeth broken; (C) - 2 teeth broken. Figure a) presents classification results for subsets used in figure \ref{fig:multiclass}. Following matrices show results for various subsets obtained by use of different seed number in dataset splitting method. Figure d) presents an example of badly chosen seed number, which led to uneffective classifier training. This is due to small size of dataset.}
 \end{figure*}
 \unskip
 \vspace{5mm}
