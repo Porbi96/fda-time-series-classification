@@ -76,11 +76,12 @@
 \TitleCitation{Functional Logistic Regression for Motor Fault Classification Using Acoustic Data in Frequency Domain}
 
 % Author Orchid ID: enter ID or remove command
-\newcommand{\orcidauthorA}{0000-0003-3313-581X} % Add \orcidA{} behind the author's name
+\newcommand{\orcidauthorA}{0000-0002-4313-1209} % Add 
+\newcommand{\orcidauthorB}{0000-0003-3313-581X} % Add \orcidA{} behind the author's name
 %\newcommand{\orcidauthorB}{0000-0000-0000-000X} % Add \orcidB{} behind the author's name
 
 % Authors, for the paper (add full first names)
-\Author{Jakub Poręba, Jerzy Baranowski \orcidA{}}
+\Author{Jakub Poręba \orcidA{}, Jerzy Baranowski \orcidB{}}
 
 %\longauthorlist{yes}
 
@@ -93,7 +94,7 @@
 
 % Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
 \address{%
-AGH University of Science \& Technology; e-mail@e-mail.com, jb@agh.edu.pl}
+AGH University of Science \& Technology; jkbporeba@gmail.com, jb@agh.edu.pl}
 
 
 % Contact information of the corresponding author
@@ -108,10 +109,13 @@ AGH University of Science \& Technology; e-mail@e-mail.com, jb@agh.edu.pl}
 %\conference{} % An extended version of a conference paper
 
 % Abstract (Do not insert blank lines, i.e. \\) 
-\abstract{}
+\abstract{
+Motor diagnostic is an important subject for consideration. Electric motors of different types are present in multitude of object from consumer goods, though everyday use devices to specialized equipment. Diagnostic of motors with acoustic signals is an interesting field, as microphones are present everywhere and are relatively easy sensor to process. In this paper we analyze acoustic signals for the purpose of motor diagnostics using functional data analysis. We represent spectrum (FFT) of the acoustic signals in a B-Spline basis and construct a classifier on that representation. Results are promising, especially for binary classifiers, while multiclass (softmax regression) show more sensitivity to dataset size.
+}
 
 % Keywords
-\keyword{keyword 1; keyword 2; keyword 3 (List three to ten pertinent keywords specific to the article; yet reasonably common within the subject discipline.)} 
+\keyword{Functional Data Analysis; Motor Diagnostics; Acoustic Signal; Functional Logistic Regression}
+
 
 % The fields PACS, MSC, and JEL may be left empty or commented out if not applicable
 %\PACS{J0101}
@@ -157,7 +161,10 @@ Functional data is the way of data interpretation where each subject is consider
 
 Many researchers have already presented several methods of FDA, including funtional logistic regression  and functional principal component analysis (PCA). Ramsay et al. in \cite{ramsay-logreg2, ramsay1982data} described the foundations and concept of functional data analysis, along with theory and examples in statistics, and in \cite{ramsay-logreg} characterised tools for FDA. Besse et al. in  \cite{besse-pca} and later Pezzulini and Silverman in \cite{pezzulini-pca} described techniques for principal component analysis of data consisting of \textit{n} functions . Mousavi and Sørensen in  \cite{logreg-comparison} made great comparison of three major methods and use cases of functional logistic regression - dimension reduction via functional PCA, penalized functional regression and wavelet expansions combined with Least Absolute Shrinking and Seletion Operator penalization. Berrendero et al. in \cite{logreg-issues} described possible issues and problems with implementation of FDA. Denhere and Billor in \cite{denhere-robust-logreg} proposed robust approach to functional logistic regression, which allows parameter estimator to be resistant to outliers, simultaneously with keeping reduced dimension. Ratcliffe et al. in \cite{ratcliffe-pregnancies} used functional logistic regression to predict the probability of a high risk pregnancies and births. 
 
-In this paper the general approach and proposed implementation of time series data classification using functional logistic regression both in binary and multiclass variants is presented. To handle the dimensionality of data, voice recordings of commutator motors described in \cite{ref-motors}, B-spline functions of parametrized order are used.
+
+The main contribution of this paper is the proposed application of functional classifier  both in binary and multiclass variants for motor faults. We perform our analysis in frequency domain, representing spectra of acoustic signals with splines. 
+
+The paper is organized as follows. First we present the necessary background into functional data analysis, logistic and softmax regressions, functional logistic regression and considered motor case study. Then we present our results documenting computational setup, preprocessing and computation results. Paper ends with discussion and conclusions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -339,7 +346,7 @@ Author noticed, that if new data is collected with help of the same microphone a
 
 The practical implementation of functional logistic regression in binary variant is based on and developed from Python library for functional data analysis \href{https://fda.readthedocs.io/en/latest/index.html}{scikit-fda}. The library contains ready-to-use classes and methods for FDA purpose. Solution is fully compatible with \href{https://scikit-learn.org/}{scikit-learn} library and can be use along with standard data analysis and machine learning implementations. Basic element of the library is class \textit{FDataGrid}. It is used for representing functional data as a set of curves discretised in a grid of points. Other commonly used representation is class \textit{FDataBasis} or used later in this paper \textit{BSpline}. Both of them store data as functions' coefficients. Library implements also exploratory analysis package which deals with techniques to summarize, interpret and visualize functional data. Plotting methods are fully compatible with widely used Matplotlib. Another module contains scikit-learn machine learning algorithms implemented in version compatible with functional data. The library stores also example datasets, such as Berkeley growth study or Canadian weather data which allow user to understand FDA basics and implemented methods. Web page is full of examples as well, along with API references and tutorials.
 
-The multiclass variant of logistic regression is not stored in scikit-fda library. It is made from scratch, based on available binary version as well as solutions for classical approaches stored in scikit-learn. The final proposed implementation is stored as a public, open-source \href{https://github.com/Porbi96/fda-time-series-classification}{GitHub repository}. The repository contains also a demonstration with use of mock data and practical use based on data possessed.
+The multiclass variant of logistic regression is not stored in scikit-fda library. It is made from scratch, based on available binary version as well as solutions for classical approaches stored in scikit-learn. The final proposed implementation is stored as a public, open-source GitHub repository. The repository contains also a demonstration with use of mock data and practical use based on data possessed.
 
 The database used for practical tests and visualizations contains voice recordings of commutator motors both damaged and undamaged. More information about the data can be found in \cite{ref-motors}.
 
@@ -467,7 +474,7 @@ Confusion matrices below present results for different split methods, so for tra
         \caption{}
     \end{subfigure}
     
-    \caption{Confusion matrices for different training and validation subsets made from the same datasets of three chosen classes: (A) - 1 tooth broken; (B) - 5 teeth broken; (C) - 2 teeth broken. Figure a) presents classification results for subsets used in figure \ref{fig:multiclass}. Following matrices show results for various subsets obtained by use of different seed number in dataset splitting method. Figure d) presents an example of badly chosen seed number, which led to uneffective classifier training. This is due to small size of dataset.}
+    \caption{Confusion matrices for different training and validation subsets made from the same datasets of three chosen classes: (A) - 1 tooth broken; (B) - 5 teeth broken; (C) - 2 teeth broken. Figure a) presents classification results for subsets used in figure \ref{fig:multiclass}. Following matrices show results for various subsets obtained by use of different seed number in dataset splitting method. Figure d) presents an example of badly chosen seed number, which led to ineffective classifier training. This is due to small size of dataset. \label{fig:confusion}}
 \end{figure*}
 \unskip
 \vspace{5mm}
@@ -580,16 +587,15 @@ Confusion matrices below present results for different split methods, so for tra
 % The text continues here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Discussion}
+\section{Discussion and conclusions}
+In our analysis we have used FDA and logistic (and softmax) regression classifier as a proof of concept for fault recognition. As it can be seen it requires less computation and storage and can work very well. 
 
-As found in \cite{ref-motors} the corelation between type of damage and acoustic response is significant. While preparing samples it is very important to keep similar environment (distance between measured tool and microphone etc.) and use the same devices such as microphones. Possible additional samples should be recorded with the same microphone as well. As long as all samples are recorded by the exactly same microphone and in similar environment, the results should not differ.
+As found in \cite{ref-motors} the correlation between type of damage and acoustic response is significant. While preparing samples it is very important to keep similar environment (distance between measured tool and microphone etc.) and use the same devices such as microphones. Possible additional samples should be recorded with the same microphone as well. As long as all samples are recorded by the exactly same microphone and in similar environment, the results should not differ.
 
 Basis spline interpolation can prevent  data from losing important features simultaneously allowing data size to be reduced. Crucial factor is number of spline functions used. Too few number of splines will result in losing major features of recorded data and too many splines will extend the calculation and model fitting time, as well as increase size of data in case of saving it.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusions}
+As it was shown in figure \ref{fig:confusion}, problem is sensitive to smaller datasets. This is an issue that will be covered in the future work. In particular we are interested in extending the classifier into Bayesian setting. Our previous results for Bayesian FDA show a lot of promise, allowing compensating for missing data with prior knowledge and probabilistic modelling (see \cite{en14185893}). We will also consider verification for other types of data.
 
-This section is not mandatory, but can be added to the manuscript if the discussion is unusually long or complex.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{6pt} 
@@ -611,7 +617,7 @@ This section is not mandatory, but can be added to the manuscript if the discuss
 
 \informedconsent{Not applicable.}
 
-\dataavailability{{\color{red}TODO}} 
+\dataavailability{Source code and data are available in the repository: \url{https://github.com/KAIR-ISZ/fda-motor-acoustic}} 
 
 \acknowledgments{Authors would like express their gratitude to Prof. Adam Głowacz for providing data and Prof. Edyta Kucharska for administrative support}
 
